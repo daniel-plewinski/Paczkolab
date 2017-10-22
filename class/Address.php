@@ -27,6 +27,13 @@ class Address implements Action
         return $this;
     }
 
+    public function setPostcode(string $postcode)
+    {
+        $this->postcode = $postcode;
+
+        return $this;
+    }
+
     public function getPostcode(): string
     {
         return $this->postcode;
@@ -51,11 +58,9 @@ class Address implements Action
         return $this;
     }
 
-    public function getFlatNumber(string $flatNumber)
+    public function getFlatNumber(): string
     {
-        $this->flatNumber = $flatNumber;
-
-        return $this;
+        return $this->flatNumber;
     }
 
     public function getId(): int
@@ -82,28 +87,60 @@ class Address implements Action
         return $addressList;
     }
 
-    // te metody trzeba uzupełnić
-
     public function save()
     {
 
+        if ($this->id > 0) {
+            // UPDATE
+
+        } else {
+            // INSERT
+            $sql = "INSERT INTO Address SET city=:city, postcode=:code, street=:street, flat_number=:flat";
+            self::$db->query($sql);
+            self::$db->bind('city', $this->getCity());
+            self::$db->bind('code', $this->getPostcode());
+            self::$db->bind('street', $this->getStreet());
+            self::$db->bind('flat', $this->getFlatNumber());
+            self::$db->execute();
+        }
     }
 
     public function update()
     {
-
+        $sql = "UPDATE Address SET city=:city, postcode=:code, street=:street, flat_number=:flat WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->bind('city', $this->city);
+        self::$db->bind('code', $this->postcode);
+        self::$db->bind('street', $this->street);
+        self::$db->bind('flat', $this->flatNumber);
+        self::$db->execute();
     }
 
     public function delete()
     {
-
+        $sql = "DELETE FROM Address WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->execute();
     }
 
 
     public static function load($id = null)
     {
+        $sql = "SELECT * FROM Address WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $id);
+        $singleAddress = self::$db->single();
 
+        $address = new Address();
+        $address->setCity($singleAddress['city']);
+        $address->setPostcode($singleAddress['postcode']);
+        $address->setStreet($singleAddress['street']);
+        $address->setFlatNumber($singleAddress['flat_number']);
+        $address->id = $singleAddress['id'];
 
+        return $address;
     }
 
 

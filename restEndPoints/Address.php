@@ -13,34 +13,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // Pobieramy (REST)
     exit();
 
 
-    // kod poniżej trzeba uzupełnić bo dodałem tylko kopie z innego pliku
-
-
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // Dodajemy (REST)
 
     // tworzymy objekt
-    $size = new Size();
+    $address = new Address();
 
     // ustawiamy własności
-    $size->setPrice($_POST['price']);
-    $size->setName($_POST['size']);
+    $address->setCity($_POST['city']);
+    $address->setPostcode($_POST['code']);
+    $address->setStreet($_POST['street']);
+    $address->setFlatNumber($_POST['flat']);
 
     // zapisujemy do bazy
-    $size->save();
+    $address->save();
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     parse_str(file_get_contents("php://input"), $patchVars);
-    $sizeToUpdate = Size::load($patchVars['id']);
-    $sizeToUpdate->setPrice($patchVars['price']);
-    $sizeToUpdate->setName($patchVars['size']);
-    $sizeToUpdate->update();
+    $addressToUpdate = Address::load($patchVars['id']);
+    $addressToUpdate->setCity($patchVars['city']);
+    $addressToUpdate->setPostcode($patchVars['code']);
+    $addressToUpdate->setStreet($patchVars['street']);
+    $addressToUpdate->setFlatNumber($patchVars['flat']);
+    $addressToUpdate->update();
 
 
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
     parse_str(file_get_contents("php://input"), $deleteVars);
-    $sizeToDelete = Size::load($deleteVars['id']); // zwraca pojedynczy objekt Size
-    $sizeToDelete->delete();
+    $addressToDelete = Address::load($deleteVars['id']); // zwraca pojedynczy objekt
+    $addressToDelete->delete();
 
 }
