@@ -17,28 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // Pobieramy (REST)
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') { // Dodajemy (REST)
 
     // tworzymy objekt
-    $size = new Size();
+    $user = new User();
 
     // ustawiamy własności
-    $size->setPrice($_POST['price']);
-    $size->setName($_POST['size']);
+    $user->setName($_POST['name']);
+    $user->setSurname($_POST['surname']);
+    $user->setCredits($_POST['credits']);
+    $user->setAddress($_POST['address_id']);
 
     // zapisujemy do bazy
-    $size->save();
+    $user->save();
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     parse_str(file_get_contents("php://input"), $patchVars);
-    $sizeToUpdate = Size::load($patchVars['id']);
-    $sizeToUpdate->setPrice($patchVars['price']);
-    $sizeToUpdate->setName($patchVars['size']);
-    $sizeToUpdate->update();
+    $userToUpdate = User::load($patchVars['id']);
+    $userToUpdate->setName($patchVars['name']);
+    $userToUpdate->setSurname($patchVars['surname']);
+    $userToUpdate->setCredits($patchVars['credits']);
+    $userToUpdate->setAddress($patchVars['address']);
+    $userToUpdate->update();
 
 
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
     parse_str(file_get_contents("php://input"), $deleteVars);
-    $sizeToDelete = Size::load($deleteVars['id']); // zwraca pojedynczy objekt Size
-    $sizeToDelete->delete();
+    $userToDelete = User::load($deleteVars['id']); // zwraca pojedynczy objekt
+    $userToDelete->delete();
 
 }

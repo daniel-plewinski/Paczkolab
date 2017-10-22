@@ -12,7 +12,7 @@ class User implements Action
     private $name = '';
     private $surname = '';
     private $credits = 0;
-    private $address = '';
+    private $address = 0;
 
     public function getName(): string
     {
@@ -50,12 +50,12 @@ class User implements Action
         return $this;
     }
 
-    public function getAddress(): string
+    public function getAddress(): int
     {
         return $this->address;
     }
 
-    public function setAddress(string $address)
+    public function setAddress(int $address)
     {
         $this->address = $address;
 
@@ -90,24 +90,56 @@ class User implements Action
 
     public function save()
     {
+        if ($this->id > 0) {
+            // UPDATE
 
+        } else {
+            // INSERT
+            $sql = "INSERT INTO User SET name=:name, surname=:surname, credits=:credits, address=:address";
+            self::$db->query($sql);
+            self::$db->bind('name', $this->getName());
+            self::$db->bind('surname', $this->getSurname());
+            self::$db->bind('credits', $this->getCredits());
+            self::$db->bind('address', $this->getAddress());
+            self::$db->execute();
+        }
     }
 
     public function update()
     {
-
+        $sql = "UPDATE User SET name=:name, surname=:surname, credits=:credits, address=:address WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->bind('name', $this->name);
+        self::$db->bind('credits', $this->credits);
+        self::$db->bind('address', $this->address);
+        self::$db->execute();
     }
 
     public function delete()
     {
-
+        $sql = "DELETE FROM User WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->execute();
     }
 
 
     public static function load($id = null)
     {
+        $sql = "SELECT * FROM User WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $id);
+        $singleUser = self::$db->single();
 
+        $user = new User();
+        $user->setName($singleUser['name']);
+        $user->setSurname($singleUser['surname']);
+        $user->setCredits($singleUser['credits']);
+        $user->setAddress($singleUser['address']);
+        $user->id = $singleUser['id'];
 
+        return $user;
     }
 
 
