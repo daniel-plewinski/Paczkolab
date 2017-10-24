@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // Pobieramy (REST)
     $parcel = new Parcel();
 
     // ustawiamy własności
+    $parcel->setAddressId($_POST['address_id']);
+    $parcel->setSizeId($_POST['size_id']);
+    $parcel->setUserId($_POST['user_id']);
 
     // zapisujemy do bazy
     $parcel->save();
@@ -25,10 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // Pobieramy (REST)
 } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     parse_str(file_get_contents("php://input"), $patchVars);
     $parcelToUpdate = Parcel::load($patchVars['id']);
-
+    $parcelToUpdate->setAddressId($patchVars['address_id']);
+    $parcelToUpdate->setSizeId($patchVars['size_id']);
+    $parcelToUpdate->setUserId($patchVars['user_id']);
     $parcelToUpdate->update();
-
-
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 

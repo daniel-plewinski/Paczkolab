@@ -74,22 +74,53 @@ class Parcel implements Action
 
     public function save()
     {
+        if ($this->id > 0) {
+            // UPDATE
 
+        } else {
+            // INSERT
+            $sql = "INSERT INTO Parcel SET address_id=:addressid, user_id=:userid, size_id=:sizeid";
+            self::$db->query($sql);
+            self::$db->bind('addressid', $this->getAddressId());
+            self::$db->bind('userid', $this->getUserId());
+            self::$db->bind('sizeid', $this->getSizeId());
+            self::$db->execute();
+        }
     }
 
     public function update()
     {
-
+        $sql = "UPDATE Parcel SET address_id=:addressid, user_id=:userid, size_id=:sizeid WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->bind('addressid', $this->addressid);
+        self::$db->bind('userid', $this->userid);
+        self::$db->bind('sizeid', $this->sizeid);
+        self::$db->execute();
     }
 
     public function delete()
     {
-
+        $sql = "DELETE FROM Parcel WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $this->id);
+        self::$db->execute();
     }
 
     public static function load($id = null)
     {
+        $sql = "SELECT * FROM Parcel WHERE id=:id";
+        self::$db->query($sql);
+        self::$db->bind('id', $id);
+        $singleParcel = self::$db->single();
 
+        $parcel = new Parcel();
+        $parcel->setAddressId($singleParcel['address_id']);
+        $parcel->setUserId($singleParcel['user_id']);
+        $parcel->setSizeId($singleParcel['size_id']);
+        $parcel->id = $singleParcel['id'];
+
+        return $parcel;
 
     }
 
