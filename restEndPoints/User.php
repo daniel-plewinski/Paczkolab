@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // Pobieramy (REST)
     $userToUpdate->setName($patchVars['name']);
     $userToUpdate->setSurname($patchVars['surname']);
     $userToUpdate->setCredits($patchVars['credits']);
-    $userToUpdate->setAddress($patchVars['address']);
     $userToUpdate->update();
 
 

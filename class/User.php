@@ -107,12 +107,12 @@ class User implements Action
 
     public function update()
     {
-        $sql = "UPDATE User SET name=:name, surname=:surname, credits=:credits, address=:address WHERE id=:id";
+        $sql = "UPDATE User SET name=:name, surname=:surname, credits=:credits WHERE id=:id";
         self::$db->query($sql);
         self::$db->bind('id', $this->id);
         self::$db->bind('name', $this->name);
+        self::$db->bind('surname', $this->surname);
         self::$db->bind('credits', $this->credits);
-        self::$db->bind('address', $this->address);
         self::$db->execute();
     }
 
