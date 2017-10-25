@@ -92,6 +92,7 @@ class User implements Action
     {
         if ($this->id > 0) {
             // UPDATE
+            $this->update();
 
         } else {
             // INSERT
