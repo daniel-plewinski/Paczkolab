@@ -18,7 +18,7 @@ class Size implements Action
         return $this->name;
     }
 
-    public function getPrice(): int
+    public function getPrice(): float
     {
         return $this->price;
     }
@@ -30,7 +30,7 @@ class Size implements Action
         return $this;
     }
 
-    public function setPrice(int $price)
+    public function setPrice(float $price)
     {
         $this->price = $price;
 
